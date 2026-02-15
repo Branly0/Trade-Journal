@@ -13,6 +13,7 @@ python-dotenv
 # Authentication & Security
 passlib[bcrypt]
 python-jose[cryptography]
+psycopg2-binary
 
 # Caching
 redis
