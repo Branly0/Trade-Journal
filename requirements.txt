@@ -1,0 +1,32 @@
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy
+alembic
+asyncpg
+# psycopg2-binary
+
+# Config
+python-dotenv
+
+# Authentication & Security
+passlib[bcrypt]
+python-jose[cryptography]
+
+# Caching
+redis
+
+# Analytics
+pandas
+numpy
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+
+# Dev tools
+black
+isort
+mypy
