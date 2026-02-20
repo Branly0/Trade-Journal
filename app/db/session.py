@@ -1,7 +1,8 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import declarative_base
+from app.core.config import settings
 
-DATABASE_URL = "postgresql+asyncpg://postgres:branly@localhost:5432/Trader_journal"
+DATABASE_URL = settings.DB_URL
 
 engine = create_async_engine(
     DATABASE_URL,
