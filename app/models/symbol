@@ -1,0 +1,16 @@
+from sqlalchemy import Uuid, DateTime, Column, Integer, Float, Boolean, String, func 
+from app.db.session import Base
+
+class Symbol(Base):
+    __tablename__ = "symbols"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, nullable=False)
+    asset_type = Column(String, nullable=False) #is an enum in the frontend, but for simplicity, we can store it as a string in the database
+    is_active = Column(Boolean, default=True)
+    pip_size = Column(Float, nullable=False)
+    tick_size = Column(Float, nullable=False)
+    quote_currency = Column(String, nullable=True) #enum
+    base_currency = Column(String, nullable=True) #enum
+
+    created_at = Column(DateTime, server_default=func.now(), nullable=False) #we can store the created_at as a string in the database, but in the frontend, we can convert it to a date object for better handling
