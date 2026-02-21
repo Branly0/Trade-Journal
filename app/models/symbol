@@ -1,4 +1,5 @@
-from sqlalchemy import Uuid, DateTime, Column, Integer, Float, Boolean, String, func 
+from sqlalchemy import DateTime, Column, Integer, Float, Boolean, String, func 
+from sqlalchemy.orm import relationship
 from app.db.session import Base
 
 class Symbol(Base):
@@ -12,5 +13,6 @@ class Symbol(Base):
     tick_size = Column(Float, nullable=False)
     quote_currency = Column(String, nullable=True) #enum
     base_currency = Column(String, nullable=True) #enum
-
     created_at = Column(DateTime, server_default=func.now(), nullable=False) #we can store the created_at as a string in the database, but in the frontend, we can convert it to a date object for better handling
+
+    trades = relationship("Trade", back_populates="symbol", cascade="all, delete-orphan")
