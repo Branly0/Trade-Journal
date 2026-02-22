@@ -1,6 +1,12 @@
-from sqlalchemy import Uuid, Column, Integer, Float, Boolean, String 
+from sqlalchemy import Uuid, Column, Integer, Float, Boolean, String, Enum
+import enum 
 from sqlalchemy.orm import relationship
 from app.db.session import Base
+
+class UserTypeEnum(enum.Enum):
+    admin = "admin"
+    trader = "trader"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -10,7 +16,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     phone = Column(String, unique=True, nullable=True)
     hashed_password = Column(String, nullable=False)
-    user_type = Column(String, nullable=False) #is an enum in the frontend, but for simplicity, we can store it as a string in the database
+    user_type = Column(Enum(UserTypeEnum), nullable=False)
     profile_picture_url = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
 
