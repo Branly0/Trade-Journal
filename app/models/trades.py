@@ -1,6 +1,6 @@
 from sqlalchemy import Uuid, Column, Integer, Float, Boolean, Enum, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.session import Base
+from app.db.base import Base
 import enum
 
 class StrategyEnum(enum.Enum):

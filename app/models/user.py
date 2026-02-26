@@ -1,7 +1,7 @@
 from sqlalchemy import Uuid, Column, Integer, Float, Boolean, String, Enum
 import enum 
 from sqlalchemy.orm import relationship
-from app.db.session import Base
+from app.db.base import Base
 
 class UserTypeEnum(enum.Enum):
     admin = "admin"
