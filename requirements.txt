@@ -12,7 +12,9 @@ python-dotenv
 
 # Authentication & Security
 pydantic-settings
-passlib[bcrypt]
+'pydantic[email]'
+python-multipart
+passlib[bcrypt,argon2]
 python-jose[cryptography]
 psycopg2-binary
 

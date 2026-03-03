@@ -1,7 +1,7 @@
 import enum
 from sqlalchemy import DateTime, Column, Integer, Float, Boolean, String, func, Enum
 from sqlalchemy.orm import relationship
-from app.db.base import Base
+from app.db.session import Base
 
 class AssetTypeEnum(enum.Enum):
     forex = "forex"

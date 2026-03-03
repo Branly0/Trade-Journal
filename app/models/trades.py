@@ -1,6 +1,6 @@
 from sqlalchemy import Uuid, Column, Integer, Float, Boolean, Enum, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.base import Base
+from app.db.session import Base
 import enum
 
 class StrategyEnum(enum.Enum):
@@ -18,14 +18,14 @@ class Trade(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     max_duration_min = Column(Integer, nullable=True)
-    entry = Column(Float, nullable=False)
-    exit = Column(Float, nullable=False)
-    stop_loss = Column(Float, nullable=False)
-    take_profit = Column(Float, nullable=False)
-    is_closed = Column(Boolean, nullable=False, default=False)
-    time_frame = Column(Integer, nullable=False)
-    session = Column(Enum(SessionEnum), nullable=False)
-    strategy = Column(Enum(StrategyEnum), nullable=False)
+    entry = Column(Float, nullable=True)
+    exit = Column(Float, nullable=True)
+    stop_loss = Column(Float, nullable=True)
+    take_profit = Column(Float, nullable=True)
+    is_closed = Column(Boolean, nullable=True, default=False)
+    time_frame = Column(Integer, nullable=True)
+    session = Column(Enum(SessionEnum), nullable=True)
+    strategy = Column(Enum(StrategyEnum), nullable=True)
     symbol_id = Column(Integer, ForeignKey("symbols.id", ondelete="CASCADE")) # Foreign key to symbols table, assuming you have a symbols table with an integer primary key
     user_id = Column(Uuid, ForeignKey("users.id", ondelete="CASCADE")) # Foreign key to users table, assuming you have a users table with a UUID primary key
 
