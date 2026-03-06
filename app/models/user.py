@@ -2,7 +2,6 @@ from sqlalchemy import Uuid, Column, Integer, Float, Boolean, String, Enum, Date
 import enum 
 from sqlalchemy.orm import relationship
 from app.db.session import Base
-from pydantic import BaseModel
 from datetime import datetime
 import sqlalchemy as sa
 
@@ -25,23 +24,7 @@ class User(Base):
     created_at = Column(DateTime, server_default=sa.func.now(), nullable=False)
     updated_at = Column(DateTime, server_default=sa.func.now(), onupdate=sa.func.now(), nullable=False)
 
-    trades = relationship("Trade", back_populates="user", cascade="all, delete-orphan")
-
-
-class UserCreate(BaseModel):
-    username: str
-    email: str
-    password: str
-
-class UserLogin(BaseModel):
-    email: str
-    password: str
-
-class UserResponse(BaseModel):
-    id: str
-    username: str
-    email: str
-    user_type: str
-
-    class Config:
-        from_attributes = True
+    # trades = relationship("Trade", back_populates="user", cascade="all, delete-orphan")
+    tokens = relationship("Token", back_populates="user", cascade="all, delete-orphan")
+    accounts = relationship("Account", back_populates="user", cascade="all, delete-orphan")
+    strategies = relationship("Strategy", back_populates="user", cascade="all, delete-orphan")

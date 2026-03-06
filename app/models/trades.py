@@ -1,4 +1,4 @@
-from sqlalchemy import Uuid, Column, Integer, Float, Boolean, Enum, String, ForeignKey
+from sqlalchemy import Uuid, Column,String, Integer, Float, Boolean, Enum, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.session import Base
 import enum
@@ -23,15 +23,15 @@ class Trade(Base):
     stop_loss = Column(Float, nullable=True)
     take_profit = Column(Float, nullable=True)
     is_closed = Column(Boolean, nullable=True, default=False)
-    time_frame = Column(Integer, nullable=True)
+    time_frame = Column(String, nullable=True)
     session = Column(Enum(SessionEnum), nullable=True)
     strategy = Column(Enum(StrategyEnum), nullable=True)
     symbol_id = Column(Integer, ForeignKey("symbols.id", ondelete="CASCADE")) # Foreign key to symbols table, assuming you have a symbols table with an integer primary key
-    user_id = Column(Uuid, ForeignKey("users.id", ondelete="CASCADE")) # Foreign key to users table, assuming you have a users table with a UUID primary key
+    account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE")) # Foreign key to accounts table, assuming you have an accounts table with an integer primary key
 
     trade_notes = relationship("TradeNote", back_populates="trade", cascade="all, delete-orphan")
     trade_screenshots = relationship("TradeScreenshot", back_populates="trade", cascade="all, delete-orphan")
-    user = relationship("User", back_populates="trades")
+    account = relationship("Account", back_populates="trades")
     symbol = relationship("Symbol", back_populates="trades")
 
 

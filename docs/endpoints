@@ -1,0 +1,289 @@
+🧾 Trading Journal API — Endpoint Documentation
+
+Base URL:
+
+/api/v1
+
+All protected routes require:
+
+Authorization: Bearer <access_token>
+🔐 AUTH
+POST /auth/register
+
+Create new user.
+
+Body
+{
+  "email": "user@email.com",
+  "password": "string"
+}
+Response
+{
+  "message": "User created successfully"
+}
+POST /auth/login
+Body
+{
+  "email": "user@email.com",
+  "password": "string"
+}
+Response
+{
+  "access_token": "jwt",
+  "refresh_token": "jwt",
+  "token_type": "bearer"
+}
+POST /auth/refresh
+Body
+{
+  "refresh_token": "jwt"
+}
+Response
+{
+  "access_token": "new_jwt",
+  "token_type": "bearer"
+}
+👤 USER
+GET /users/me
+
+Returns current authenticated user.
+
+🏦 ACCOUNTS
+POST /accounts
+
+Create trading account.
+
+Body
+{
+  "name": "FTMO Account",
+  "initial_balance": 10000,
+  "currency": "USD"
+}
+GET /accounts
+
+List all user accounts.
+
+GET /accounts/{account_id}
+
+Get single account details.
+
+DELETE /accounts/{account_id}
+
+Soft delete account.
+
+📊 STRATEGIES
+POST /strategies
+
+Create strategy.
+
+Body
+{
+  "name": "London Breakout",
+  "description": "Breakout during London open"
+}
+
+Rules:
+
+Admin can create global strategies
+
+Users can create personal strategies
+
+GET /strategies
+
+List strategies (global + user-created)
+
+📈 TRADES
+POST /trades
+
+Create new trade.
+
+Body
+{
+  "account_id": 1,
+  "symbol": "EURUSD",
+  "entry_price": 1.0850,
+  "stop_loss": 1.0830,
+  "take_profit": 1.0900,
+  "risk_amount": 100,
+  "max_duration": 120,
+  "timeframe": "M5",
+  "session": "London",
+  "strategy_id": 3,
+  "image_url": "https://..."
+}
+Behavior
+
+Status = ongoing (default)
+
+RR calculated automatically
+
+Risk validated
+
+Trade linked to user
+
+PATCH /trades/{trade_id}
+
+Update trade dynamically.
+
+Allowed updates:
+
+exit_price
+
+status
+
+image_url
+
+notes
+
+If:
+
+status = closed
+
+System automatically:
+
+Calculates PnL
+
+Determines win/loss
+
+Updates account balance
+
+Updates drawdown
+
+Stores outcome_status
+
+GET /trades
+
+Query params:
+
+?account_id=
+?status=
+?symbol=
+?strategy_id=
+?from_date=
+?to_date=
+?page=
+?page_size=
+GET /trades/{trade_id}
+
+Return single trade.
+
+DELETE /trades/{trade_id}
+
+Soft delete.
+
+📉 ANALYTICS
+
+These endpoints compute live performance.
+
+GET /analytics/summary?account_id=1
+
+Returns:
+
+{
+  "total_trades": 120,
+  "win_rate": 52.4,
+  "average_rr": 1.8,
+  "expectancy": 0.42,
+  "profit_factor": 1.6,
+  "net_profit": 2400
+}
+GET /analytics/drawdown?account_id=1
+
+Returns:
+
+{
+  "max_drawdown": 8.5,
+  "current_drawdown": 2.1,
+  "peak_balance": 12400,
+  "current_balance": 12150
+}
+GET /analytics/by-session?account_id=1
+
+Returns performance grouped by:
+
+London
+
+New York
+
+Asia
+
+GET /analytics/by-strategy?account_id=1
+
+Returns:
+
+[
+  {
+    "strategy": "London Breakout",
+    "win_rate": 60,
+    "net_profit": 1200
+  }
+]
+🖼 SCREENSHOT UPLOAD
+POST /uploads/trade-image
+
+Upload screenshot.
+
+Returns:
+
+{
+  "image_url": "https://cdn/.../image.png"
+}
+
+(You can use S3, Cloudinary, or local static storage)
+
+🤖 AUTOMATED INSIGHT (Advanced Feature)
+GET /analytics/insights?account_id=1
+
+Returns AI-style insights:
+
+{
+  "insights": [
+    "You perform better during London session.",
+    "Your average RR drops below 1.2 on M1 timeframe.",
+    "Strategy 'Scalp Reversal' has negative expectancy."
+  ]
+}
+
+This is huge for portfolio.
+
+🏗 Architecture Notes
+
+Important backend rules:
+
+Every trade belongs to a user
+
+Every account belongs to a user
+
+Every query filters by user_id
+
+Never trust client calculations
+
+All PnL logic done server-side
+
+Status drives state transitions
+
+🎯 What Makes This Portfolio-Level
+
+This shows:
+
+Domain modeling
+
+Financial math logic
+
+Auth with JWT + refresh
+
+Role system (admin/user)
+
+Async DB usage
+
+Query filtering
+
+Analytics computation
+
+File uploads
+
+Business rules enforcement
+
+This is not beginner backend.
+
+This is fintech backend.

@@ -10,6 +10,9 @@ from app.db.session import Base  # Import your Base here
 from app.models.user import User
 from app.models.trades import Trade, TradeNote, TradeScreenshot
 from app.models.symbol import Symbol
+from app.models.token import Token
+from app.models.accounts import Account
+from app.models.strategies import Strategy
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
