@@ -3,11 +3,13 @@ from sqlalchemy.orm import relationship
 from app.db.session import Base
 import enum
 
-class StrategyEnum(enum.Enum):
-    scalping = "scalping"
-    day_trading = "day_trading"
-    swing_trading = "swing_trading"
-    position_trading = "position_trading"
+# class StrategyEnum(enum.Enum):
+#     scalping = "scalping"
+#     day_trading = "day_trading"
+#     swing_trading = "swing_trading"
+#     position_trading = "position_trading"
+
+
 class SessionEnum(enum.Enum):
     London = "London"
     New_York = "New_York"
@@ -25,12 +27,13 @@ class Trade(Base):
     is_closed = Column(Boolean, nullable=True, default=False)
     time_frame = Column(String, nullable=True)
     session = Column(Enum(SessionEnum), nullable=True)
-    strategy = Column(Enum(StrategyEnum), nullable=True)
+    strategy_id = Column(Integer, ForeignKey("strategies.id", ondelete="CASCADE")) # Foreign key to strategies table, assuming you have a strategies table with an integer primary key
     symbol_id = Column(Integer, ForeignKey("symbols.id", ondelete="CASCADE")) # Foreign key to symbols table, assuming you have a symbols table with an integer primary key
     account_id = Column(Integer, ForeignKey("accounts.id", ondelete="CASCADE")) # Foreign key to accounts table, assuming you have an accounts table with an integer primary key
 
     trade_notes = relationship("TradeNote", back_populates="trade", cascade="all, delete-orphan")
     trade_screenshots = relationship("TradeScreenshot", back_populates="trade", cascade="all, delete-orphan")
+    strategy = relationship("Strategy", back_populates="trades")
     account = relationship("Account", back_populates="trades")
     symbol = relationship("Symbol", back_populates="trades")
 

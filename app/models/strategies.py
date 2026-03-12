@@ -18,4 +18,5 @@ class Strategy(Base):
     created_at = Column(DateTime, server_default=func.now(), nullable=False) #we can store the created_at as a string in the database, but in the frontend, we can convert it to a date object for better handling
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False) #we can store the updated_at as a string in the database, but in the frontend, we can convert it to a date object for better handling
 
+    trades = relationship("Trade", back_populates="strategy", cascade="all, delete-orphan")
     user = relationship("User", back_populates="strategies")

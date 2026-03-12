@@ -11,18 +11,18 @@ class TradeBase(BaseModel):
     is_closed: Optional[bool] = False
     time_frame: Optional[str] = None
     session: Optional[str] = None
-    strategy: Optional[str] = None
+    strategy_id: Optional[int] = None
     symbol_id: Optional[int] = None
 
 class TradeCreate(BaseModel):
-    pass
+    account_id: int
 
 class TradeUpdate(TradeBase):
     pass
 
 class TradeResponse(TradeBase):
     id: int
-    user_id: str
+    account_id: int
 
     class Config:
         from_attributes = True
