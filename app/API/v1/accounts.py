@@ -15,8 +15,8 @@ async def create_account(account: AccountCreate, db: Session = Depends(get_db), 
             name=account.name,
             account_type=account.account_type,
             currency=account.currency,
-            initial_deposit=account.initial_deposit,
-            balance=account.initial_deposit,
+            initial_deposit=account.balance,
+            balance=account.balance,
             equity=account.equity,
             user_id=current_user.id
         )

@@ -7,7 +7,7 @@ class AccountBase(BaseModel):
     name: str
     account_type: str
     currency: str
-    initial_deposit: float
+    # initial_deposit: float
     balance: float
     equity: float
 

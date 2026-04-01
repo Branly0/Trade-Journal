@@ -150,7 +150,7 @@ Updates account balance
 Updates drawdown
 
 Stores outcome_status
-
+ 
 GET /trades
 
 Query params:
