@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.core.dependencies import get_current_user
 from app.models.accounts import Account
+from app.models.trades import Trade, TradeNote, TradeScreenshot
 from app.schemas.accounts import AccountCreate, AccountResponse, AccountUpdate, BalanceUpdate
 from app.models.user import User
 
@@ -66,11 +67,20 @@ async def update_account_balance(account_id: int, balance_update: BalanceUpdate,
     db.refresh(account)
     return account
 
-@router.delete("/{account_id}", response_model=AccountResponse)
+@router.delete("/{account_id}", response_model=str)
 async def delete_account(account_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     account = db.query(Account).filter(Account.id == account_id, Account.user_id == current_user.id).first()
     if not account:
         raise HTTPException(status_code=404, detail="Account not found")
+    D_trades = db.query(Trade).filter(Trade.account_id == account_id).all()
+    for trade in D_trades:
+        D_trade_notes = db.query(TradeNote).filter(TradeNote.trade_id == trade.id).all()
+        for note in D_trade_notes:
+            db.delete(note)
+        D_trade_screenshots = db.query(TradeScreenshot).filter(TradeScreenshot.trade_id == trade.id).all()
+        for screenshot in D_trade_screenshots:
+            db.delete(screenshot)
+        db.delete(trade)
     db.delete(account)
     db.commit()
-    return account
+    return "Account deleted successfully"
