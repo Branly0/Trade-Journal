@@ -35,8 +35,8 @@ async def get_strategy(strategy_id: int, db: Session = Depends(get_db), current_
     return strategy
 
 @router.get("/", response_model=list[StrategyResponse])
-async def list_strategies(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    strategies = db.query(Strategy).filter(Strategy.user_id == current_user.id).all()
+async def list_strategies(db: Session = Depends(get_db), current_user: User = Depends(get_current_user), limit: int = 10, offset: int = 0):
+    strategies = db.query(Strategy).filter(Strategy.user_id == current_user.id).offset(offset).limit(limit).all()
     return strategies
 
 @router.put("/{strategy_id}", response_model=StrategyResponse)
