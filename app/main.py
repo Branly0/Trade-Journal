@@ -20,7 +20,7 @@ app.include_router(analytics_router)
 
 @app.get("/")
 async def read_root():
-    return {"message": "Hello, world!"}
+    return {"message": "Hello, world im now on linux!"}
 
 @app.get("/me")
 async def read_current_user(current_user: dict = Depends(get_current_user)):
